@@ -22,35 +22,38 @@ natives = NativeGates(0).from_gatelist(glist)
 custom_passes = [Unroller(native_gates=natives)]
 custom_pipeline = Passes(custom_passes)
 
-
 sys.path.insert(0, str(_P(__file__).resolve().parents[1]))
 import config  # scripts/config.py
+
+def transpiled_cnot(circuit, control, target):
+    """Transpile CNOT using native gates."""
+    circuit.add(gates.H(target))
+    circuit.add(gates.CZ(control, target))
+    circuit.add(gates.H(target))
+    
+    return circuit
+
+def transpiled_swap(circuit, qubit1, qubit2):
+    """Transpile SWAP using native gates."""
+    circuit = transpiled_cnot(circuit, qubit1, qubit2)
+    circuit = transpiled_cnot(circuit, qubit2, qubit1)
+    circuit = transpiled_cnot(circuit, qubit1, qubit2)
+    
+    return circuit
 
 def order_chain_edges(edges):
     """Ensure edges form a -> b -> c ordering."""
     (a, b), (c, d) = edges
-<<<<<<< HEAD
-
-=======
->>>>>>> 312d64fce6d713fcdb0bf4a78726e3eaeb3c4ab2
     # Find shared qubit
     shared = list(set([a, b]) & set([c, d]))
     assert len(shared) == 1, "Edges do not share exactly one qubit."
     shared = shared[0]
-<<<<<<< HEAD
 
     # Determine left and right
     left  = a if a != shared else b
     right = c if c != shared else d
 
     return [[left, shared], [shared, right]]
-
-=======
-    # Determine left and right
-    left  = a if a != shared else b
-    right = c if c != shared else d
-    return [[left, shared], [shared, right]]
->>>>>>> 312d64fce6d713fcdb0bf4a78726e3eaeb3c4ab2
 
 def QFT(qubits_list):
     '''
@@ -80,7 +83,8 @@ def QFT(qubits_list):
     circuit.add(qibo.gates.H(qubits_list[0][0]))
     theta1 = np.pi / 2
     circuit.add(qibo.gates.CU1(qubits_list[0][1], qubits_list[0][0], theta1))
-    circuit.add(qibo.gates.SWAP(qubits_list[0][1], qubits_list[1][1]))
+    # circuit.add(qibo.gates.SWAP(qubits_list[0][1], qubits_list[1][1]))
+    circuit = transpiled_swap(circuit, qubits_list[0][1], qubits_list[1][1])
     theta2 = np.pi / 4
     circuit.add(qibo.gates.CU1(qubits_list[0][1], qubits_list[0][0], theta2))
     circuit.add(qibo.gates.H(qubits_list[1][1]))
