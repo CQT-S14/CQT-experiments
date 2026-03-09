@@ -13,6 +13,12 @@ pip install --upgrade pip setuptools wheel
 
 # Install whichever editable local packages you want to use in dev_env
 pip install -e ~/qibocal-eo-fork
+
+# Pin qibolab to 0.2.9 (compatible with qibo 0.2.x).
+# qibocal pulls qibolab 0.2.12+ which requires qibo >=0.3.0, but
+# qibocal itself requires qibo <0.3.0 — so we force the last compatible version.
+pip install "qibolab==0.2.9"
+
 # Lock qibo version to match qibocal 0.2.x requirements
 echo "qibo<0.3.0" > /tmp/qibocal-constraints.txt
 pip install -e ~/CQT-experiments-eo-fork -c /tmp/qibocal-constraints.txt
