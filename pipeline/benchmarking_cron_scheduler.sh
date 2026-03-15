@@ -18,5 +18,4 @@ if [ "$current_time" != "$SCHEDULED_TIME" ]; then
 fi
 
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Scheduled time reached — submitting job" >> "$LOG_FILE"
-cd "$REPO_ROOT"
-sbatch pipeline/run_sinq20_dev.sh >> "$LOG_FILE" 2>&1
+python3 "$REPO_ROOT/pipeline/benchmarking_pipeline.py" >> "$LOG_FILE" 2>&1

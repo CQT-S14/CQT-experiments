@@ -11,9 +11,6 @@ import sys
 from pathlib import Path
 import json
 import configparser
-import tomllib
-
-
 from client import (
     set_server,
     calibrations_upload, calibrations_list, calibrations_download, calibrations_get_latest,
@@ -44,10 +41,17 @@ from scripts.config import RUN_ID_FILE
 
 
 def load_secrets():
-    """Load credentials from .secrets.toml"""
-    secrets_path = repo_root / ".secrets.toml"
-    with open(secrets_path, "rb") as f:
-        secrets = tomllib.load(f)
+    """Load credentials from ~/.env_user (KEY=VALUE format)."""
+    env_file = Path.home() / ".env_user"
+    secrets = {}
+    with open(env_file) as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if "=" in line:
+                key, _, value = line.partition("=")
+                secrets[key.strip()] = value.strip()
     return secrets
 
 
@@ -481,23 +485,17 @@ def main():
                 overall_rc = overall_rc or rc
 
 
-    if overall_rc == 0:
-    # Load credentials from .secrets.toml
-        secrets = load_secrets()
-        server_url = secrets["server_url"]
-        api_token = secrets["api_token"]
-        
-        # Set server with credentials from secrets
-        set_server(server_url=server_url, api_token=api_token)
-        
-        # Upload results
-        rsp = results_upload(hashID=hash_id, runID=run_id, data_folder="./data")
-        logging.info(rsp)
+    # if overall_rc == 0:  # disabled: upload always runs regardless of experiment failures
+    # Load credentials from ~/.env_user
+    secrets = load_secrets()
+    set_server(server_url=secrets["CQT_SERVER_URL"], api_token=secrets["CQT_API_TOKEN"])
 
+    # Upload whatever results exist
+    rsp = results_upload(hashID=hash_id, runID=run_id, data_folder="./data")
+    logging.info(rsp)
 
-    # Cleanup: remove experiment ID file
-    if overall_rc == 0:
-        remove_experiment_id_file(logger)
+    # Cleanup: always remove experiment ID file
+    remove_experiment_id_file(logger)
     sys.exit(overall_rc)
 
 
