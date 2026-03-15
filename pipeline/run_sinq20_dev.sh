@@ -15,9 +15,18 @@ echo "Log files: logs/slurm_sinq20_dev_${SLURM_JOB_ID}.out / .err"
 module load qibo
 unset PYTHONPATH                    # unset path set by module qibo
 
+# Locate the repo root regardless of where sbatch was called from.
+# Under Slurm, scontrol gives us the original script path (works from any cwd).
+# Fallback to BASH_SOURCE for direct execution (e.g. bash pipeline/run_sinq20_dev.sh).
+if [ -n "${SLURM_JOB_ID:-}" ]; then
+    _SCRIPT=$(scontrol show job "$SLURM_JOB_ID" | grep -oP '(?<=Command=)\S+')
+    REPO_ROOT=$(cd "$(dirname "$_SCRIPT")/.." && pwd)
+else
+    REPO_ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+fi
+
 # Source setup_dev_env.sh to get ENV_DIR and REPOS (no setup runs, only variables)
-SETUP_SCRIPT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../workspace" && pwd)/setup_dev_env.sh"
-source "$SETUP_SCRIPT"
+source "$REPO_ROOT/workspace/setup_dev_env.sh"
 
 source "$ENV_DIR/bin/activate"      # get packages from dev_env
 
