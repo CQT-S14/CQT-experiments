@@ -156,7 +156,9 @@ def output_dir_for(script_file: str, device: str | Path) -> Path:
     return output_dir
 
 
-def load_experiment_list(config_file="experiment_list.ini", logger=None):
+def load_experiment_list(config_file=None, logger=None):
+    if config_file is None:
+        config_file = REPO_ROOT / "pipeline" / "experiment_list.ini"
     """
     Load experiment list from an INI configuration file.
 

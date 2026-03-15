@@ -31,7 +31,7 @@ pip install --upgrade pip setuptools wheel
 # =============================================================================
 echo ""
 echo "===== RESOLVING COMPATIBILITY CONSTRAINTS ====="
-resolver_output=$(python3 "$SCRIPT_DIR/scripts/resolve_constraints.py" "${REPOS[@]}")
+resolver_output=$(python3 "$SCRIPT_DIR/resolve_constraints.py" "${REPOS[@]}")
 
 CONSTRAINTS_FILE=""
 PINS=()

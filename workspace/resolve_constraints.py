@@ -60,7 +60,7 @@ except ImportError:
         return {"combos": combos}
 
 
-MATRIX_FILE = Path(__file__).parent.parent / "compatibility_matrix.toml"
+MATRIX_FILE = Path(__file__).parent / "compatibility_matrix.toml"
 
 # Maps PyPI package names to the repo folder name patterns that provide them.
 # If a repo in the install list matches any of these patterns, the package

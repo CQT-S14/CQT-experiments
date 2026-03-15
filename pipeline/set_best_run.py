@@ -1,3 +1,9 @@
+import sys
+from pathlib import Path
+
+# Ensure repo root is on sys.path so clientdb/ is importable regardless of cwd
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from clientdb.client import (
     set_server,
     calibrations_upload, calibrations_list, calibrations_download, calibrations_get_latest,
@@ -5,7 +11,22 @@ from clientdb.client import (
     get_best_n_runs,upload_all_calibrations,upload_all_experiment_runs
 )
 
-set_server(server_url='http://54.169.91.191',api_token='EtadObqx4MRwCTLsTa_YWmTfUl24Jg57tngu_feXna4')
+
+def _load_env_user():
+    env_file = Path.home() / ".env_user"
+    env = {}
+    with open(env_file) as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if "=" in line:
+                key, _, value = line.partition("=")
+                env[key.strip()] = value.strip()
+    return env
+
+_env = _load_env_user()
+set_server(server_url=_env["CQT_SERVER_URL"], api_token=_env["CQT_API_TOKEN"])
 
 # rsp = calibrations_upload(hashID="1e1f7e1d1af58009eda1986bb3689e6b9b2356b6", calibrations_folder="./data/calibrations")
 # print(rsp)

@@ -1,6 +1,10 @@
+import sys
 import argparse
-import tomllib
 from pathlib import Path
+
+# Ensure repo root is on sys.path so clientdb/ is importable regardless of cwd
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from clientdb.client import (
     set_server,
     calibrations_upload, calibrations_list, calibrations_download, calibrations_get_latest,
@@ -10,10 +14,17 @@ from clientdb.client import (
 
 
 def load_secrets():
-    """Load credentials from .secrets.toml"""
-    secrets_path = Path(__file__).parent / ".secrets.toml"
-    with open(secrets_path, "rb") as f:
-        secrets = tomllib.load(f)
+    """Load credentials from ~/.env_user (KEY=VALUE format)."""
+    env_file = Path.home() / ".env_user"
+    secrets = {}
+    with open(env_file) as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if "=" in line:
+                key, _, value = line.partition("=")
+                secrets[key.strip()] = value.strip()
     return secrets
 
 
@@ -30,8 +41,8 @@ def main():
 
     # Load credentials from .secrets.toml
     secrets = load_secrets()
-    server_url = secrets["server_url"]
-    api_token = secrets["api_token"]
+    server_url = secrets["CQT_SERVER_URL"]
+    api_token = secrets["CQT_API_TOKEN"]
 
     # Set server with credentials from secrets
     set_server(server_url=server_url, api_token=api_token)
