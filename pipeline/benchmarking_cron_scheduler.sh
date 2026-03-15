@@ -6,7 +6,7 @@
 # To change the schedule: edit SCHEDULED_TIME below, commit, and pull on the server.
 # No crontab changes needed.
 
-SCHEDULED_TIME="21:00"   # 24h format HH:MM
+SCHEDULED_TIME="21:03"   # 24h format HH:MM
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 LOG_FILE="$REPO_ROOT/logs/benchmarking_cron_scheduler.log"
