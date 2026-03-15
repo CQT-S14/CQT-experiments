@@ -37,5 +37,5 @@ for pkg in qibocal qibolab qibo; do
 done
 echo "==============================="
 
-cd ~/"${REPOS[-1]}"
+cd ~/"${REPOS[0]}"
 python3 scripts/scripts_executor.py --device sinq20

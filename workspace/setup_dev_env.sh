@@ -9,8 +9,8 @@
 ENV_DIR=~/envs/workspace_env
 
 REPOS=(
-  "qibocal"
-  "CQT-experiments-pipeline-benchmarking"
+  "CQT-experiments-pipeline-benchmarking" # always keep first the experiments repo
+  "qibocal" # add whatever other package-repo local clones you needed
 )
 
 # When sourced by another script (e.g. run_sinq20_dev.sh), only the variables
