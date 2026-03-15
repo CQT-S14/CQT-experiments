@@ -1,6 +1,6 @@
 # CQT-experiments
 
-This project provides a benchmarking suite for quantum experiments. The system uses a batch runner (`scripts_executor`) that executes experiments defined in an ini configuration file (experiments_list.ini), organizing results in a standardized directory structure. 
+This project provides a benchmarking suite for quantum experiments. The system uses a batch runner (`scripts_executor`) that executes experiments defined in an ini configuration file (experiments_list.ini), organizing results in a standardized directory structure.
 
 ## Project Structure
 
