@@ -44,15 +44,18 @@ def main():
     server_url = secrets["CQT_SERVER_URL"]
     api_token = secrets["CQT_API_TOKEN"]
 
-    # Set server with credentials from secrets
     set_server(server_url=server_url, api_token=api_token)
 
-    if args.upload_calibration:
-        rsp = calibrations_upload(hashID=args.hashid, calibrations_folder="./data/calibrations")
-    else:
-        rsp = results_upload(hashID=args.hashid, runID=args.runid, data_folder="./data")
-    print(rsp)
+    # Always ensure calibration is registered before uploading results
+    print("Uploading calibration...")
+    rsp = calibrations_upload(hashID=args.hashid, calibrations_folder="./data/calibrations")
+    print(f"Calibration upload: {rsp}")
 
+    if not args.upload_calibration:
+        # Upload results too (default behavior)
+        print("Uploading results...")
+        rsp = results_upload(hashID=args.hashid, runID=args.runid, data_folder="./data")
+        print(f"Results upload: {rsp}")
 
 if __name__ == "__main__":
     main()
