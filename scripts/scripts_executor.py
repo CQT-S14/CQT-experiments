@@ -485,21 +485,21 @@ def main():
                 overall_rc = overall_rc or rc
 
 
-    # if overall_rc == 0:  # disabled: upload always runs regardless of experiment failures
-    # Load credentials from ~/.env_user
+    # Upload calibration and results to DB
     secrets = load_secrets()
     set_server(server_url=secrets["CQT_SERVER_URL"], api_token=secrets["CQT_API_TOKEN"])
 
-    # Upload whatever results exist
+    # Upload calibration first (ensures poll.py can discover this hash)
+    rsp = calibrations_upload(hashID=hash_id, calibrations_folder="./data/calibrations")
+    logger.info(f"Calibration upload: {rsp}")
+
+    # Upload results
     rsp = results_upload(hashID=hash_id, runID=run_id, data_folder="./data")
-    logging.info(rsp)
+    logger.info(f"Results upload: {rsp}")
 
     # Cleanup: always remove experiment ID file
     remove_experiment_id_file(logger)
     sys.exit(overall_rc)
-
-
-
 
 
 if __name__ == "__main__":
