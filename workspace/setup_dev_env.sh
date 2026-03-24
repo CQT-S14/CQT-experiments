@@ -1,16 +1,18 @@
 #!/bin/bash
 
 # =============================================================================
-# SECTION 1 — USER CONFIG
+# SECTION 1 — USER CONFIG (auto-detected)
 # List the repo folder names (under ~/) you want installed as editable packages.
 # This is the only section you need to edit.
-# The last entry in REPOS is treated as the CQT experiments repo to run from.
 # =============================================================================
-ENV_DIR=~/envs/workspace_env
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+THIS_REPO="$(basename "$(cd "$SCRIPT_DIR/.." && pwd)")"
+
+ENV_DIR=~/envs/workspace_env_${THIS_REPO}
 
 REPOS=(
-  "CQT-experiments-pipeline-benchmarking" # always keep first the experiments repo
-  "qibocal" # add whatever other package-repo local clones you needed
+  "$THIS_REPO"   # auto-detected from this script's location
+  "qibocal"      # add whatever other package-repo local clones you need
 )
 
 # When sourced by another script (e.g. run_sinq20_dev.sh), only the variables
@@ -21,8 +23,6 @@ set -euo pipefail
 # =============================================================================
 # SECTION 2 — ENV SETUP
 # =============================================================================
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
 module load qibo
 unset PYTHONPATH
 python3 -m venv "$ENV_DIR"
