@@ -20,9 +20,7 @@ set -euo pipefail
 # =============================================================================
 # SECTION 2 — ENV SETUP
 # =============================================================================
-module load qibo
-unset PYTHONPATH
-python3 -m venv "$ENV_DIR"
+/usr/local/bin/python3.12 -m venv "$ENV_DIR"
 source "$ENV_DIR/bin/activate"
 pip install --upgrade pip setuptools wheel
 # =============================================================================
@@ -69,15 +67,15 @@ done
 # Cleanup temp constraints file
 [[ -n "$CONSTRAINTS_FILE" && -f "$CONSTRAINTS_FILE" ]] && rm "$CONSTRAINTS_FILE"
 # =============================================================================
-# SECTION 5 — MODULE FALLBACK
-# Adds the module site-packages as a fallback AFTER editable installs,
+# SECTION 5 — HARDWARE FALLBACK
+# Adds the keysight-qcs-py312 site-packages as a fallback AFTER editable installs,
 # so dev_env packages always win. Named zzz_* to sort last.
-# (Needed for keysight and other packages only available in the module.)
+# (Needed for keysight and other hardware drivers only available in keysight-qcs-py312.)
 # =============================================================================
 VENV_SITE=$(python3 -c 'import site; print(site.getsitepackages()[0])')
-MODULE_SITE="/mnt/scratch/envs/qibo/lib/python3.12/site-packages"
-echo "$MODULE_SITE" > "$VENV_SITE/zzz_module_fallback.pth"
-echo "Created $VENV_SITE/zzz_module_fallback.pth -> $MODULE_SITE"
+HARDWARE_SITE=~/envs/keysight-qcs-py312/lib/python3.12/site-packages
+echo "$HARDWARE_SITE" > "$VENV_SITE/zzz_hardware_fallback.pth"
+echo "Created $VENV_SITE/zzz_hardware_fallback.pth -> $HARDWARE_SITE"
 # =============================================================================
 # SECTION 6 — LOG
 # =============================================================================
@@ -88,4 +86,4 @@ echo ""
 echo "===== qibocal location ====="
 pip show qibocal | grep -E "^(Name|Version|Location|Editable)"
 echo "=============================="
-fi # end of direct-execution guard
+fi # end of direct-execution guard 
