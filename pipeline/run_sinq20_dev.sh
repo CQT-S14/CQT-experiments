@@ -8,12 +8,8 @@ echo "Log files: logs/slurm_sinq20_dev_${SLURM_JOB_ID}.out / .err"
 
 # Resolve packages and dependencies in this order:
 # First: package versions specified in dev_env as defined in setup_dev_env.sh 
-# Second: falls back to module qibo packages if packages not  present in dev_env (eg. keysight)
-# 
-# Esesentially: editable installs take priority over module ones which are put
-# into zzz_module_fallback.pth automatically so they are forced to resolve only if needed.
-module load qibo
-unset PYTHONPATH                    # unset path set by module qibo
+# Second: falls back to environment keysight-qcs-py312 if packages not  present in dev_env (eg. keysight) 
+# Esesentially: editable installs take priority over fallback ones 
 
 # Locate the repo root regardless of where sbatch was called from.
 # Under Slurm, scontrol gives us the original script path (works from any cwd).
