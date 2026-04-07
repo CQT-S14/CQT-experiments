@@ -86,4 +86,4 @@ echo ""
 echo "===== qibocal location ====="
 pip show qibocal | grep -E "^(Name|Version|Location|Editable)"
 echo "=============================="
-fi # end of direct-execution guard
+fi # end of direct-execution guard 
