@@ -50,6 +50,8 @@ def load_secrets():
             if not line or line.startswith("#"):
                 continue
             if "=" in line:
+                if line.startswith("export "):
+                    line = line[len("export "):]
                 key, _, value = line.partition("=")
                 secrets[key.strip()] = value.strip()
     return secrets
