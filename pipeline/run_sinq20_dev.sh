@@ -42,5 +42,5 @@ for pkg in qibocal qibolab qibo; do
 done
 echo "==============================="
 
-cd ~/"${REPOS[0]}"
+cd "$REPO_ROOT"
 python3 scripts/scripts_executor.py --device sinq20
