@@ -6,10 +6,20 @@
 #   1. Did the most recent Slurm job produce errors? (.err file > threshold)
 #   2. Did any job run today at all?
 #
-# Intended to run via cron at 23:50 daily on cqt-paul-server:
-#   50 23 * * * /path/to/check_experiment_submission.sh
+# Crontab fires this script every minute; checks only run when
+# current time matches SCHEDULED_TIME.
+#
+# To change the schedule: edit SCHEDULED_TIME below, commit, and pull on the server.
+# No crontab changes needed.
 #
 # Requires: SLACK_NOTIFICATIONS_WEBHOOK set in ~/.env_user (KEY=VALUE format)
+
+SCHEDULED_TIME="23:50"   # 24h format HH:MM
+
+current_time=$(date +"%H:%M")
+if [ "$current_time" != "$SCHEDULED_TIME" ]; then
+    exit 0
+fi
 
 ENV_FILE="$(eval echo ~)/.env_user"
 if [ ! -f "$ENV_FILE" ]; then
