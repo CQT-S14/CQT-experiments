@@ -55,15 +55,22 @@ echo ""
 if [[ ${#PINS[@]} -gt 0 ]]; then
   pip install "${PINS[@]}"
 fi
-# Install each editable repo with constraints applied
+# Install all editable repos in a single pip call so the resolver sees the full
+# local dependency graph at once. Installing them one at a time lets an
+# earlier repo's declared dependency on a later repo's package name (e.g.
+# CQT-experiments depending on "qibocal") get resolved against a stale PyPI
+# release instead of the local editable clone, since that clone isn't
+# installed yet at that point in the loop.
+editable_flags=()
 for repo in "${REPOS[@]}"; do
   echo "Installing editable: $PARENT_DIR/$repo"
-  if [[ -n "$CONSTRAINTS_FILE" ]]; then
-    pip install -e "$PARENT_DIR/$repo" -c "$CONSTRAINTS_FILE"
-  else
-    pip install -e "$PARENT_DIR/$repo"
-  fi
+  editable_flags+=("-e" "$PARENT_DIR/$repo")
 done
+if [[ -n "$CONSTRAINTS_FILE" ]]; then
+  pip install "${editable_flags[@]}" -c "$CONSTRAINTS_FILE"
+else
+  pip install "${editable_flags[@]}"
+fi
 # Cleanup temp constraints file
 [[ -n "$CONSTRAINTS_FILE" && -f "$CONSTRAINTS_FILE" ]] && rm "$CONSTRAINTS_FILE"
 # =============================================================================
