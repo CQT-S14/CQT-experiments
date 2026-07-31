@@ -11,3 +11,10 @@ description = "qibocal 0.2.x series — qibo 0.3.x breaks compatibility"
 qibo        = "0.2.23"
 qibocal     = "0.2.5"
 qibolab     = "0.2.9"
+
+[[combos]]
+date        = "2026-07-31"
+description = "Post-upstream-sync: qibocal ^0.3.1 + qibolab ^0.3.0 need qibo 0.3.x"
+qibo        = "0.3.4"
+qibocal     = "0.2.6"
+qibolab     = "0.2.17"
