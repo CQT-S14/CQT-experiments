@@ -14,7 +14,7 @@ qibolab     = "0.2.9"
 
 [[combos]]
 date        = "2026-07-31"
-description = "Post-upstream-sync: qibocal ^0.3.1 + qibolab ^0.3.0 need qibo 0.3.x"
-qibo        = "0.3.4"
+description = "Post-upstream-sync: qibocal ^0.3.1 + qibolab ^0.3.0 need qibo 0.3.x (0.3.4 bumps cma>=4.0.0, breaking qibocal's cma<4.0.0 requirement — 0.3.3 is the last compatible release)"
+qibo        = "0.3.3"
 qibocal     = "0.2.6"
 qibolab     = "0.2.17"
