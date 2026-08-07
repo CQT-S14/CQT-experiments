@@ -44,9 +44,9 @@ def main(nqubits, nshots, niter, depths, device, **kwargs):
     }
 
     with Executor.open(
-        "myexec",
         path=root_path,
         platform=platform,
+        targets=list(range(nqubits)),
         update=True,
         force=True,
     ) as e:
