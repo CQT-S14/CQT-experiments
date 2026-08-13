@@ -51,6 +51,16 @@ def main(nqubits, nshots, niter, depths, device, **kwargs):
         force=True,
     ) as e:
 
+        if nqubits > e.platform.nqubits:
+            message = (
+                f"standard_rb FAILED: requested nqubits={nqubits} but platform "
+                f"'{platform}' only has {e.platform.nqubits} qubits available. "
+                "This script defaults to nqubits=20 for the 20-qubit chip; "
+                "pass --nqubits explicitly when running against a smaller chip."
+            )
+            print(message)
+            raise RuntimeError(message)
+
         start_time = time.time()
         e.standard_rb(parameters=params)
         end_time = time.time()
@@ -87,7 +97,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--nqubits",
-        default=5,
+        # Defaults to 20 because our primary chip (sinq20) has 20 qubits and
+        # standard_rb should benchmark all of them by default. The pipeline
+        # (scripts_executor.py) never passes --nqubits explicitly, so this
+        # default is what actually governs every real run. If this script is
+        # ever run against the smaller 5-qubit chip, it will fail on purpose
+        # (see the nqubits-vs-platform check right after Executor.open above)
+        # instead of silently only benchmarking a subset of qubits.
+        default=20,
         type=int,
         help="Total number of qubits",
     )
