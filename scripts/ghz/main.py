@@ -70,7 +70,6 @@ def run_ghz_experiment(chain_of_qubits, device, nshots, root_path):
     # Only run Executor if using qibolab
     if platform:
         with Executor.open(
-            "myexec",
             path=root_path,
             platform=platform,
             targets=chain_of_qubits,
