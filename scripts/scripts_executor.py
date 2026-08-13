@@ -466,6 +466,12 @@ def main():
         section_name = str(qubit_count_key)
         
         if section_name in experiment_groups:
+            if not best_edges_k_qubits[section_name]:
+                logger.warning(
+                    f"No best edges available for section {section_name}; skipping {experiment_groups[section_name]}"
+                )
+                continue
+
             nodes: list[int] = []
             avg_fidelity = None
             edge_pairs =   best_edges_k_qubits[section_name][0][0]

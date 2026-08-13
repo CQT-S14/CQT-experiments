@@ -296,7 +296,6 @@ def main(qubits_list, device, nshots, debug=False, args=None, input_filename="in
     atexit.register(cleanup_handler)
 
     with Executor.open(
-        "qml_executor",
         path=root_path,
         platform=device,
         targets=qubits_list[:num_qubits],
