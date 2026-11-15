@@ -72,7 +72,7 @@ fi
 # --- Send notification ---
 if [ ${#ALERT_MESSAGES[@]} -eq 0 ]; then
     # All checks passed
-    BODY=":white_check_mark: *Benchmarking experiments ran successfully on $TODAY.* Results available."
+    BODY=":warning: *Benchmarking pipeline infrastructure works end to end*, but experiment execution requires Keysight control electronics. While the quantum computer uses another vendor’s electronics, scientifically valid results and benchmarking reports remain temporarily unavailable."
     BODY+="\n\n_Run at $(date '+%Y-%m-%d %H:%M') on $(hostname)_"
 
     curl -s -X POST "$SLACK_NOTIFICATIONS_WEBHOOK" \
