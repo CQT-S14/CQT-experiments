@@ -49,9 +49,9 @@ def main(device, **kwargs):
     }
 
     with Executor.open(
-        "myexec",
         path=root_path,
         platform=platform,
+        targets=qb_array1 + qb_array2,
         update=True,
         force=True,
     ) as e:

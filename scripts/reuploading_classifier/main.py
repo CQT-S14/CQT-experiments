@@ -28,7 +28,7 @@ from qibo.symbols import Z
 from qiboml.models.encoding import PhaseEncoding, QuantumEncoding
 from qiboml.models.decoding import Expectation
 from qiboml.interfaces.pytorch import QuantumModel
-from qiboml.operations.differentiation import PSR
+from qiboml.differentiations.psr import PSR
 from qiboml import ndarray
 
 '''

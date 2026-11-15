@@ -58,7 +58,6 @@ def run_tomography(targets, device, nshots, root_path):
     # Only run Executor if using qibolab
     if platform:
         with Executor.open(
-            "myexec",
             path=root_path,
             platform=platform,
             targets=[(targets[0], targets[1])],

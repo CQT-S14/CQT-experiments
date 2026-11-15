@@ -28,6 +28,8 @@ dependencies = [
     "torch",
     "torchvision",
     "qiboml",
+    "jax>=0.4.25,<0.5.0",
+    "jaxlib>=0.4.25,<0.5.0",
     "tabulate",
 ]
 
