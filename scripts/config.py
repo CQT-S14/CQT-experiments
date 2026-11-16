@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 from git.repo.base import Repo
 import logging
 import configparser
@@ -9,7 +10,7 @@ import networkx as nx
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = REPO_ROOT / "data"
 
-CURRENT_CALIBRATION_DIRECTORY = "/mnt/scratch/qibolab_platforms_nqch"
+CURRENT_CALIBRATION_DIRECTORY = os.environ.get("QIBOLAB_PLATFORMS", "/mnt/scratch/qibolab_platforms_nqch")
 RUN_ID_FILE = REPO_ROOT / "current_run_id.json"
 
 

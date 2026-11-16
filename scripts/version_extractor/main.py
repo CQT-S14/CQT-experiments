@@ -60,7 +60,7 @@ def main(device):
             versions[package] = version
 
     platform = "sinq20" if device == "sinq20" else device
-    repo = Repo("/mnt/scratch/qibolab_platforms_nqch")
+    repo = Repo(config.CURRENT_CALIBRATION_DIRECTORY)
     hash_id = repo.commit().hexsha
 
     # Load run_id from file if it exists
