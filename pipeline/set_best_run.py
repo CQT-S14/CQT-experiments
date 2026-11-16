@@ -1,3 +1,4 @@
+import os
 import sys
 from pathlib import Path
 
@@ -13,7 +14,7 @@ from clientdb.client import (
 
 
 def _load_env_user():
-    env_file = Path.home() / ".env_user"
+    env_file = Path(os.environ.get("CQT_ENV_FILE", str(Path.home() / ".env_user")))
     env = {}
     with open(env_file) as f:
         for line in f:

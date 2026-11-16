@@ -42,7 +42,7 @@ from scripts.config import RUN_ID_FILE
 
 def load_secrets():
     """Load credentials from ~/.env_user (KEY=VALUE format)."""
-    env_file = Path.home() / ".env_user"
+    env_file = Path(os.environ.get("CQT_ENV_FILE", str(Path.home() / ".env_user")))
     secrets = {}
     with open(env_file) as f:
         for line in f:

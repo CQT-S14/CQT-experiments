@@ -21,9 +21,7 @@ from qiboml.models.decoding import Expectation
 from qiboml.interfaces.pytorch import QuantumModel
 from qiboml.operations.differentiation import PSR
 
-os.environ["QIBOLAB_PLATFORMS"] = pathlib.Path(
-    "/mnt/scratch/qibolab_platforms_nqch"
-).as_posix()
+os.environ.setdefault("QIBOLAB_PLATFORMS", "/mnt/scratch/qibolab_platforms_nqch")
 
 from pathlib import Path as _P
 import sys

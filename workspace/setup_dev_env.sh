@@ -7,7 +7,7 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PARENT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 THIS_REPO="$(basename "$(cd "$SCRIPT_DIR/.." && pwd)")"
-ENV_DIR=~/envs/workspace_env_${THIS_REPO}
+ENV_DIR="${CQT_WORKSPACE_ENV_DIR:-$HOME/envs/workspace_env_${THIS_REPO}}"
 REPOS=(
   "$THIS_REPO"   # auto-detected from this script's location
   "CQT-qibocal"      # add whatever other package-repo local clones you need
@@ -80,7 +80,7 @@ fi
 # (Needed for keysight and other hardware drivers only available in keysight-qcs-py312-274.)
 # =============================================================================
 VENV_SITE=$(python3 -c 'import site; print(site.getsitepackages()[0])')
-HARDWARE_SITE=~/envs/keysight-qcs-py312-274/lib/python3.12/site-packages
+HARDWARE_SITE="${CQT_WORKSPACE_HARDWARE_SITE:-$HOME/envs/keysight-qcs-py312-274/lib/python3.12/site-packages}"
 echo "$HARDWARE_SITE" > "$VENV_SITE/zzz_hardware_fallback.pth"
 echo "Created $VENV_SITE/zzz_hardware_fallback.pth -> $HARDWARE_SITE"
 # =============================================================================

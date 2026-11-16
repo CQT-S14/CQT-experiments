@@ -36,9 +36,7 @@ from plots import plot_reuploading_classifier
 from datetime import date
 '''
 
-os.environ["QIBOLAB_PLATFORMS"] = pathlib.Path(
-    "/mnt/scratch/qibolab_platforms_nqch"
-).as_posix()
+os.environ.setdefault("QIBOLAB_PLATFORMS", "/mnt/scratch/qibolab_platforms_nqch")
 
 import sys
 from pathlib import Path as _P
